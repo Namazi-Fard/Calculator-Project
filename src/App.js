@@ -5,11 +5,33 @@ function App() {
   const [display, setDisplay] = useState("");
   const [expression, setExpression] = useState([]);
 
-  const handleClick = value => {
+  const handleClick = (value) => {
     setDisplay(value);
     setExpression([...expression, value]);
   };
-    return (
+  const handleResult = () => {
+    const result = expression
+      .join("")
+      .split(/(\D)/g)
+      .map((value) => (value.match(/\d/g) ? parseInt(value, 0) : value))
+      .reduce((acc, value, index, array) => {
+        switch (value) {
+          case "+":
+            return (acc = acc + array[index + 1]);
+          case "-":
+            return (acc = acc - array[index + 1]);
+          case "x":
+            return (acc = acc * array[index + 1]);
+          case "÷":
+            return (acc = acc / array[index + 1]);
+          default:
+            return acc;
+        }
+      });
+    setDisplay(result);
+    setExpression("");
+  };
+  return (
     <div className="App">
       <h3 className="display">{display}</h3>
 
